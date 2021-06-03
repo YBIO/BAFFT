@@ -5,6 +5,7 @@ Birds of A Feather Flock Together: Categort-Divergence Guidance for Domain Adapt
 
 
 ##>>>Preparation
+
 git clone git@github.com:Shang-XH/BAFTT.git
 cd BAFFT/
 #install inplace-abn
