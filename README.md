@@ -7,7 +7,8 @@ Bo Yuan, Danpei Zhao, Shuai Shao, Zehuan Yuan, Changhu Wang. Birds of A Feather 
 # Preparation
 
 `` 
-git clone git@github.com:Shang-XH/BAFTT.git   <br> 
+git clone git@github.com:Shang-XH/BAFTT.git 
+\\
 cd BAFFT/  
 ``
 
