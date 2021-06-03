@@ -1,6 +1,6 @@
 # This is the official repo of "Birds of A Feather Flock Together"
 
-Birds of A Feather Flock Together: Categort-Divergence Guidance for Domain Adaptive Segmentation
+Bo Yuan, Danpei Zhao, Shuai Shao, Zehuan Yuan, Changhu Wang. Birds of A Feather Flock Together: Categort-Divergence Guidance for Domain Adaptive Segmentation
 
 
 
@@ -16,7 +16,7 @@ git clone https://github.com/NVIDIA/apex
 cd apex
 pip setup.py install
 '''
-## Prepare Dataset
+### Prepare Dataset
 '''
 Download [Cityscapes](https://www.cityscapes-dataset.com/), [CycleGAN transferred GTA5](https://drive.google.com/open?id=1OBvYVz2ND4ipdfnkhSaseT8yu2ru5n5l) and [gta5 labels](https://drive.google.com/file/d/11E42F_4InoZTnoATi-Ob1yEHfz7lfZWg/view?usp=sharing). Symbolic link them under ``data`` folder:
 ln -s path_to_Cityscapes_folder ./data/Cityscapes
