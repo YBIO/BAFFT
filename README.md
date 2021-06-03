@@ -6,8 +6,10 @@ Bo Yuan, Danpei Zhao, Shuai Shao, Zehuan Yuan, Changhu Wang. Birds of A Feather 
 
 # Preparation
 
-git clone git@github.com:Shang-XH/BAFTT.git   \\
-cd BAFFT/   \\
+git clone git@github.com:Shang-XH/BAFTT.git   
+
+cd BAFFT/   
+
 ### install inplace-abn
 pip install inplace-abn  \\
 ### install apex
