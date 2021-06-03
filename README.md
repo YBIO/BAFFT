@@ -34,9 +34,9 @@ CUDA_VISIBLE_DEVICES=0 python train_sim_ssl.py
 
 ### Inference & Evaluation
 '''
-file="$1" 
-python evaluate_cityscapes.py --restore-from "$file" 
-python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes 
+file="$1" \\\
+python evaluate_cityscapes.py --restore-from "$file" \\\
+python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes \\\
 '''
 
 ###>>> 
