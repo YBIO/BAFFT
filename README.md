@@ -28,9 +28,9 @@ ln -s path_to_gta5_labels_folder ./data/gta5_deeplab/labels  \\
 # >>>Quick Start<<<
 ## GTA5→Cityscapes:
 ### Train and Validation: 
-'''
+
 CUDA_VISIBLE_DEVICES=0 python train_sim_ssl.py
-'''
+
 
 ### Inference & Evaluation
 '''
