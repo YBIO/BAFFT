@@ -38,7 +38,7 @@ ln -s path_to_gta5_labels_folder ./data/gta5_deeplab/labels
 
 
 
-# >>>Quick Start<<<
+# Quick Start
 ## GTA5→Cityscapes:
 ### Train and Validation: 
 
