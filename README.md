@@ -55,5 +55,5 @@ python evaluate_cityscapes.py --restore-from "$file"
 python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes
 ``
 
-###>>> Results
+# Results
 
