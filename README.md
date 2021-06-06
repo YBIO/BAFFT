@@ -22,7 +22,7 @@ pip install inplace-abn
 
 `` 
 git clone https://github.com/NVIDIA/apex  
-cd apex   
+cd apex/   
 pip setup.py install 
 ``
 
