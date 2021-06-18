@@ -60,7 +60,6 @@ NUM_PROTOTYPE = 50
 POWER = 0.9
 RANDOM_SEED = 1234
 RESTORE_FROM = 'http://vllab.ucmerced.edu/ytsai/CVPR18/DeepLab_resnet_pretrained_init-f81d91e8.pth'
-#RESTORE_FROM = './snapshots/MassBuildingOnly/MassBuildingOnly_245000.pth'
 SAVE_NUM_IMAGES = 2
 SAVE_PRED_EVERY = 5000
 SNAPSHOT_DIR = './snapshots/MassBuilding2Inria' #./snapshots/MassBuildingOnly'
@@ -382,32 +381,6 @@ def main():
             right_label = F.interpolate(labels.unsqueeze(0).float(), (pred_idx.size(1),pred_idx.size(2)), mode='nearest').squeeze(0).long()
             right_label[right_label!=pred_idx] = 255
 
-            # for ii in range(len(BG_LABEL)):
-            #     cls_idx = BG_LABEL[ii]
-            #     mask = right_label==cls_idx
-            #     if torch.sum(mask) == 0:
-            #         continue
-            #     feature = global_avg_pool(src_feature, mask.float())
-            #
-            #     if cls_idx != torch.argmax(torch.squeeze(model.layer6(feature.half()).float())).item():
-            #         continue
-            #     src_cls_features[ii,int(src_cls_ptr[ii]%num_prototype),:] = torch.squeeze(feature).clone().detach()
-            #     src_cls_ptr[ii] += 1
-            #
-            # seg_ins = seg_label(right_label.squeeze())
-            # for ii in range(len(FG_LABEL)):
-            #     cls_idx = FG_LABEL[ii]
-            #     segmask, pixelnum = seg_ins[ii]
-            #     if len(pixelnum) == 0:
-            #         continue
-            #     sortmax = np.argsort(pixelnum)[::-1]
-            #     for i in range(min(10, len(sortmax))):
-            #         mask = segmask==(sortmax[i]+1)
-            #         feature = global_avg_pool(src_feature, mask.float())
-            #         if cls_idx != torch.argmax(torch.squeeze(model.layer6(feature.half()).float())).item():
-            #             continue
-            #         src_ins_features[ii,int(src_ins_ptr[ii]%num_ins),:] = torch.squeeze(feature).clone().detach()
-            #         src_ins_ptr[ii] += 1
 
             pred = interp(pred)
             loss_seg = seg_loss(pred, labels)

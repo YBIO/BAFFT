@@ -46,6 +46,10 @@ ln -s path_to_gta5_labels_folder ./data/gta5_deeplab/labels
 CUDA_VISIBLE_DEVICES=0 python train_sim_ssl.py 
 ``
 
+### pretrained models
+BaiduNetDesk:
+link: https://pan.baidu.com/s/1n_l9kJNFda5vNTKDE7b92g 
+dentch code：j5a3 
 
 ### Inference & Evaluation
 

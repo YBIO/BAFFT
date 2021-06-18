@@ -1,5 +1,6 @@
+
+### =====Inria2MassBuilding=====
 import argparse
-from os import makedirs
 import torch
 import torch.nn as nn
 from torch.utils import data, model_zoo
@@ -21,87 +22,62 @@ try:
     APEX_AVAILABLE = True
 except ModuleNotFoundError:
     APEX_AVAILABLE = False
-from model.deeplab_multi import DeeplabMultiFeature, DeeplabMulti
+from model.deeplab_multi import DeeplabMultiFeature
 from model.deeplabv3 import *
-from model.sync_batchnorm.replicate import patch_replication_callback
 from model.discriminator import FCDiscriminator
 from utils.loss import CrossEntropy2d
 from utils.functions import *
 from dataset.gta5_dataset import GTA5DataSet
 from dataset.synthia_dataset import synthiaDataSet
-from dataset.cityscapes_dataset import cityscapesDataSet
 from dataset.MassBuilding_dataset import MassBuildingDataSet
 from dataset.Inria_dataset import InriaDataSet
+from dataset.MassRoad_dataset import MassRoadDataSet
+from dataset.DeepGlobe_dataset import DeepGlobeDataSet
 from skimage.measure import label as sklabel
 from compute_iou import compute_mIoU
 from compute_IoU_RSI import compute_mIoU_RSI
 import pdb
 
 IMG_MEAN = np.array((103.280916, 108.728603, 100.012306), dtype=np.float32)
-BG_LABEL = [1]
-FG_LABEL = [0]
-ALL_LABEL = [0,1]
+BG_LABEL = [0]
+FG_LABEL = [1]
 
 MODEL = 'DeepLab'
-BATCH_SIZE = 1
+BATCH_SIZE = 2
 ITER_SIZE = 1
 NUM_WORKERS = 4
-#DATA_DIRECTORY = '/home/yb/dataset/Massachusetts_Building_dataset'
-DATA_DIRECTORY = '/home/yb/dataset/Massachusetts_Building_dataset'
-DATA_LIST_PATH = './dataset/MassBuilding_list/train.txt'
+DATA_DIRECTORY = '/home/yb/dataset/Massachusetts_Road_dataset'
+DATA_LIST_PATH = './dataset/MassRoad_list/train.txt'
 IGNORE_LABEL = 255
 INPUT_SIZE = '512,512'
-DATA_DIRECTORY_TARGET = '/home/yb/dataset/IAILD/'
-DATA_LIST_PATH_TARGET = './dataset/Inria_list/train.txt'
-DATA_LIST_PATH_TARGET_TEST = './dataset/Inria_list/val.txt'
+DATA_DIRECTORY_TARGET = '/home/yb/dataset/Massachusetts_Road_dataset'#Massachusetts_Road_dataset
+DATA_LIST_PATH_TARGET = './dataset/MassRoad_list/train.txt'
+DATA_LIST_PATH_TARGET_TEST = './dataset/MassRoad_list/val.txt'
 INPUT_SIZE_TARGET = '512,512'
 LEARNING_RATE = 2.5e-4
 MOMENTUM = 0.9
 NUM_CLASSES = 2
-NUM_STEPS = 1
-NUM_STEPS_STOP = 250000  # early stopping
+NUM_STEPS = 100000
+NUM_STEPS_STOP = 200000  # early stopping
 NUM_PROTOTYPE = 50
 POWER = 0.9
 RANDOM_SEED = 1234
-#RESTORE_FROM = 'http://vllab.ucmerced.edu/ytsai/CVPR18/DeepLab_resnet_pretrained_init-f81d91e8.pth'
-RESTORE_FROM = './snapshots/MassBuilding2Inria/MassBuilding2Inria_95000.pth'
+RESTORE_FROM = 'https://download.pytorch.org/models/resnet101-5d3b4d8f.pth'
 SAVE_NUM_IMAGES = 2
-SAVE_PRED_EVERY = 5000
-SNAPSHOT_DIR = './snapshots_ssl/MassBuilding2Inria'
+SAVE_PRED_EVERY = 10000
+SNAPSHOT_DIR = './snapshots/DeepGlobe2MassRoad_TarOnly' #./snapshots/DeepGlobe2MassRoad_SrcOnly_deeplabv3+
 WEIGHT_DECAY = 0.0005
 LOG_DIR = './log'
-SAVE_PATH = './result/Inria'
-SSL_TARGET_DIR = './target_ssl_gt_Inria' # Inria trainset pseudo GT
+SAVE_PATH = './result/DeepGlobe2MassRoad'
 
-LEARNING_RATE_D = 1e-4
+LEARNING_RATE_D = 1e-3
 LAMBDA_ADV_TARGET = 0.001
 
-TARGET = 'Inria'
+TARGET = 'MassRoad'
 SET = 'train'
 
-LAMBDA_ADV_CLS = 0.001
-LAMBDA_ADV_INS = 0.001
-LAMBDA_ADV_CATE = 0.001
-BETA = 1.0
-
-### cate2ins
-# CATEGORY_BG_COFF = [1.0, 2.0, 1.0, 5.0, 5.0, 1.0, 1.0, 1.0]
-# CATEGORY_INS_COFF = [2.0, 2.0, 2.0, 5.0, 2.0, 1.0, 1.0, 1.0, 10.0, 2.0, 2.0]
-### cate2ins-1
-# CATEGORY_BG_COFF = [1.0, 5.0, 3.0, 5.0, 2.0, 1.0, 5.0, 1.0]
-# CATEGORY_INS_COFF = [2.0, 5.0, 2.0, 5.0, 1.0, 5.0, 1.0, 5.0, 10.0, 5.0, 2.0] 
-### cate2ins-2
-# CATEGORY_BG_COFF = [1.0, 2.0, 1.0, 10.0, 5.0, 10.0, 2.0, 5.0]
-# CATEGORY_INS_COFF = [2.0, 2.0, 2.0, 10.0, 2.0, 1.0, 1.0, 10.0, 20.0, 2.0, 2.0]
-### cate2ins-3
-# CATEGORY_BG_COFF = [2.0, 5.0, 1.0, 1.0, 1.0, 5.0, 1.0, 1.0]
-# CATEGORY_INS_COFF = [10.0, 5.0, 10.0, 2.0, 1.0, 2.0, 1.0, 1.0, 2.0, 10.0, 2.0]
-## cate2ins-4
-# CATEGORY_BG_COFF = [10.0, 2.0, 1.0, 1.0, 10.0, 1.0, 1.0, 5.0]
-# CATEGORY_INS_COFF = [1.0, 1.0, 5.0, 10.0, 2.0, 1.0, 10.0, 1.0, 10.0, 2.0, 2.0]
-# cate2ins-4 new
-CATEGORY_BG_COFF = [10.0, 2.0, 1.0, 1.0, 1.0, 10.0, 1.0, 5.0]
-CATEGORY_INS_COFF = [1.0, 1.0, 5.0, 10.0, 2.0, 1.0, 1.0, 10.0, 20.0, 2.0, 2.0]
+LAMBDA_ADV_CLS = 0.01
+LAMBDA_ADV_INS = 0.01
 
 
 palette = [0,0,0,255,255,255]
@@ -115,9 +91,6 @@ def colorize_mask(mask):
     new_mask.putpalette(palette)
     return new_mask
 
-def cosine_distance(a: np.ndarray, b: np.ndarray) -> float:
-    dist = np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
-    return dist
 
 def get_arguments():
     """Parse all the arguments provided from the CLI.
@@ -148,8 +121,6 @@ def get_arguments():
                         help="Path to the directory containing the target dataset.")
     parser.add_argument("--data-list-target", type=str, default=DATA_LIST_PATH_TARGET,
                         help="Path to the file listing the images in the target dataset.")
-    parser.add_argument("--ssl-target-dir", type=str, default=SSL_TARGET_DIR,
-                        help="Path to folder storing the ground truth of the target dataset.")
     parser.add_argument("--data-list-target-test", type=str, default=DATA_LIST_PATH_TARGET_TEST,
                         help="Path to the file listing the images in the target val dataset.")
     parser.add_argument("--input-size-target", type=str, default=INPUT_SIZE_TARGET,
@@ -166,8 +137,6 @@ def get_arguments():
                         help="lambda_cls for adversarial training.")
     parser.add_argument("--lambda-adv-ins", type=float, default=LAMBDA_ADV_INS,
                         help="lambda_ins for adversarial training.")
-    parser.add_argument("--lambda-adv-cate", type=float, default=LAMBDA_ADV_CATE,
-                        help="lambda_cate_gap for adversarial training.")
     parser.add_argument("--momentum", type=float, default=MOMENTUM,
                         help="Momentum component of the optimiser.")
     parser.add_argument("--not-restore-last", action="store_true",
@@ -182,6 +151,8 @@ def get_arguments():
                         help="Number of prototypes.")
     parser.add_argument("--power", type=float, default=POWER,
                         help="Decay parameter to compute the learning rate.")
+
+
     parser.add_argument("--random-mirror", action="store_true",
                         help="Whether to randomly mirror the inputs during the training.")
     parser.add_argument("--random-scale", action="store_true",
@@ -276,7 +247,7 @@ def main():
     # Create network
     # init G
     if args.model == 'DeepLab':
-        model = DeeplabMultiFeature(num_classes=args.num_classes)
+        model = DeepLab(num_classes=args.num_classes, backbone='resnet', output_stride=16)
         if args.restore_from[:4] == 'http' :
             saved_state_dict = model_zoo.load_url(args.restore_from)
         else:
@@ -288,11 +259,11 @@ def main():
             model.load_state_dict(saved_state_dict)
         else:
             new_params = model.state_dict().copy()
-            for i in saved_state_dict:
-                i_parts = i.split('.')
-                if not args.num_classes == 19 or not i_parts[1] == 'layer5':
-                    new_params['.'.join(i_parts[1:])] = saved_state_dict[i]
-            #model.load_state_dict(new_params)
+            # for i in saved_state_dict:
+            #     i_parts = i.split('.')
+            #     if not args.num_classes == 19 or not i_parts[1] == 'layer5':
+            #         new_params['.'.join(i_parts[1:])] = saved_state_dict[i]
+            model.load_state_dict(new_params)
 
     # init D
     model_D = FCDiscriminator(num_classes=args.num_classes).to(device)
@@ -305,9 +276,7 @@ def main():
         model_D.load_state_dict(torch.load(model_D_weights_path))
         temp = model_weights_path.split('.')
         temp = temp[-2][-9:]
-        print('temp:',temp)
         Iter = int(temp.split('_')[1]) + 1
-        
 
     model.train()
     model.to(device)
@@ -319,30 +288,34 @@ def main():
         os.makedirs(args.snapshot_dir)
 
     # init data loader
-    if args.data_dir.split('/')[-1] == 'Massachusetts_Building_dataset':
-        trainset = MassBuildingDataSet(args.data_dir, args.data_list, max_iters=args.num_steps * args.iter_size * args.batch_size,
-                        crop_size=input_size,
-                        scale=args.random_scale, mirror=args.random_mirror, mean=IMG_MEAN)
-    elif args.data_dir.split('/')[-1] == 'MassBuilding2IAILD':
-        trainset = MassBuildingDataSet(args.data_dir, args.data_list, max_iters=args.num_steps * args.iter_size * args.batch_size,
-                        crop_size=input_size,
-                        scale=args.random_scale, mirror=args.random_mirror, mean=IMG_MEAN)
+    if args.data_dir.split('/')[-1] == 'Massachusetts_Road_dataset': #Massachusetts_Road_dataset
+        trainset = MassRoadDataSet(args.data_dir, args.data_list,
+                                       max_iters=args.num_steps * args.iter_size * args.batch_size,
+                                       crop_size=input_size,
+                                       scale=args.random_scale, mirror=args.random_mirror, mean=IMG_MEAN)
+    elif args.data_dir.split('/')[-1] == 'DeepGlobe':
+        trainset = MassRoadDataSet(args.data_dir, args.data_list,
+                                       max_iters=args.num_steps * args.iter_size * args.batch_size,
+                                       crop_size=input_size,
+                                       scale=args.random_scale, mirror=args.random_mirror, mean=IMG_MEAN)
 
     trainloader = data.DataLoader(trainset,
                                   batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers, pin_memory=True)
     trainloader_iter = enumerate(trainloader)
 
-    targetloader = data.DataLoader(InriaDataSet(args.data_dir_target, args.data_list_target,
+    targetloader = data.DataLoader(MassRoadDataSet(args.data_dir_target, args.data_list_target,
                                                      max_iters=args.num_steps * args.iter_size * args.batch_size,
                                                      crop_size=input_size_target,
                                                      scale=False, mirror=args.random_mirror, mean=IMG_MEAN,
-                                                     ssl_dir=args.ssl_target_dir),
+                                                     ),
                                    batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers,
                                    pin_memory=True)
     targetloader_iter = enumerate(targetloader)
 
+    train_params = [{'params': model.get_1x_lr_params(), 'lr': args.learning_rate},
+                    {'params': model.get_10x_lr_params(), 'lr': args.learning_rate * 10}]
     # init optimizer
-    optimizer = optim.SGD(model.optim_parameters(args),
+    optimizer = optim.SGD(train_params,
                           lr=args.learning_rate, momentum=args.momentum, weight_decay=args.weight_decay)
     optimizer.zero_grad()
 
@@ -350,12 +323,12 @@ def main():
     optimizer_D.zero_grad()
 
     model, optimizer = amp.initialize(
-        model, optimizer, opt_level="O2", 
+        model, optimizer, opt_level="O2",
         keep_batchnorm_fp32=True, loss_scale="dynamic"
     )
 
     model_D, optimizer_D = amp.initialize(
-        model_D, optimizer_D, opt_level="O2", 
+        model_D, optimizer_D, opt_level="O2",
         keep_batchnorm_fp32=True, loss_scale="dynamic"
     )
 
@@ -363,11 +336,10 @@ def main():
     bce_loss = torch.nn.BCEWithLogitsLoss()
     seg_loss = torch.nn.CrossEntropyLoss(ignore_index=255)
     L1_loss = torch.nn.L1Loss(reduction='none')
-    smoothL1_loss = torch.nn.SmoothL1Loss(reduction='none')
 
     interp = nn.Upsample(size=(input_size[1], input_size[0]), mode='bilinear', align_corners=True)
     interp_target = nn.Upsample(size=(input_size_target[1], input_size_target[0]), mode='bilinear', align_corners=True)
-    test_interp = nn.Upsample(size=(1024, 1024), mode='bilinear', align_corners=True)
+    test_interp = nn.Upsample(size=(500, 500), mode='bilinear', align_corners=True)
 
     # labels for adversarial training
     source_label = 0
@@ -376,14 +348,10 @@ def main():
     # init prototype
     num_prototype = args.num_prototype
     num_ins = args.num_prototype * 10
-    src_cls_features = torch.zeros([len(BG_LABEL),num_prototype,2048], dtype=torch.float32).to(device)
+    src_cls_features = torch.zeros([len(BG_LABEL),NUM_CLASSES,256], dtype=torch.float32).to(device)
     src_cls_ptr = np.zeros(len(BG_LABEL), dtype=np.uint64)
-    src_ins_features = torch.zeros([len(FG_LABEL),num_ins,2048], dtype=torch.float32).to(device)
+    src_ins_features = torch.zeros([len(FG_LABEL),NUM_CLASSES,256], dtype=torch.float32).to(device)
     src_ins_ptr = np.zeros(len(FG_LABEL), dtype=np.uint64)
-
-    src_all_features = torch.zeros([len(ALL_LABEL),num_ins,2048], dtype=torch.float32).to(device)
-    src_all_ptr = np.zeros(len(ALL_LABEL), dtype=np.uint64)
-
 
     # set up tensor board
     if args.tensorboard:
@@ -424,27 +392,23 @@ def main():
             labels = labels.long().to(device)
 
             src_feature, pred = model(images)
-            print('src_feature:',src_feature.size(),'pred:',pred.size())
             pred_softmax = F.softmax(pred, dim=1)
-            print('pred_softmax:',pred_softmax.size())
             pred_idx = torch.argmax(pred_softmax, dim=1)
-
             right_label = F.interpolate(labels.unsqueeze(0).float(), (pred_idx.size(1),pred_idx.size(2)), mode='nearest').squeeze(0).long()
             right_label[right_label!=pred_idx] = 255
 
             for ii in range(len(BG_LABEL)):
                 cls_idx = BG_LABEL[ii]
                 mask = right_label==cls_idx
+
                 if torch.sum(mask) == 0:
                     continue
-                feature = global_avg_pool(src_feature, mask.float())
-                print('feature:',feature.size())
-                if cls_idx != torch.argmax(torch.squeeze(model.layer6(feature.half()).float())).item():
-                    continue
-                src_cls_features[ii,int(src_cls_ptr[ii]%num_prototype),:] = torch.squeeze(feature).clone().detach()
+
+                feature = F.adaptive_avg_pool2d(src_feature, (1,1))
+                src_cls_features[ii,int(src_cls_ptr[ii]%NUM_CLASSES),:] = torch.squeeze(feature).clone().detach()[1:]
                 src_cls_ptr[ii] += 1
 
-            seg_ins = seg_label(right_label.squeeze()) # len(seg_ins) = 11
+            seg_ins = seg_label(right_label.squeeze())
             for ii in range(len(FG_LABEL)):
                 cls_idx = FG_LABEL[ii]
                 segmask, pixelnum = seg_ins[ii]
@@ -453,10 +417,8 @@ def main():
                 sortmax = np.argsort(pixelnum)[::-1]
                 for i in range(min(10, len(sortmax))):
                     mask = segmask==(sortmax[i]+1)
-                    feature = global_avg_pool(src_feature, mask.float())
-                    if cls_idx != torch.argmax(torch.squeeze(model.layer6(feature.half()).float())).item():
-                        continue
-                    src_ins_features[ii,int(src_ins_ptr[ii]%num_ins),:] = torch.squeeze(feature).clone().detach()
+                    feature = F.adaptive_avg_pool2d(src_feature, (1, 1))
+                    src_ins_features[ii,int(src_ins_ptr[ii]%NUM_CLASSES),:] = torch.squeeze(feature).clone().detach()[-1]
                     src_ins_ptr[ii] += 1
 
             pred = interp(pred)
@@ -471,9 +433,8 @@ def main():
             # train with target
 
             _, batch = targetloader_iter.__next__()
-            images, trg_labels, _, _ = batch
+            images, _, _, _ = batch
             images = images.to(device)
-            trg_labels = trg_labels.long().to(device)
 
             trg_feature, pred_target = model(images)
 
@@ -482,20 +443,17 @@ def main():
 
             loss_cls = torch.zeros(1).to(device)
             loss_ins = torch.zeros(1).to(device)
-            loss_cate_dist = torch.zeros(1).to(device)
-            loss_cate_dist_BG= torch.zeros(1).to(device)
-            loss_cate_dist_FG = torch.zeros(1).to(device)
             if i_iter > 0:
                 for ii in range(len(BG_LABEL)):
                     cls_idx = BG_LABEL[ii]
                     if src_cls_ptr[ii] / num_prototype <= 1:
                         continue
                     mask = pred_target_idx==cls_idx
-                    feature = global_avg_pool(trg_feature, mask.float())
-                    if cls_idx != torch.argmax(torch.squeeze(model.layer6(feature.half()).float())).item():
-                        continue
-                    ext_feature = feature.squeeze().expand(num_prototype, 2048)
-                    loss_cls += CATEGORY_BG_COFF[ii] * torch.min(torch.sum(L1_loss(ext_feature, src_cls_features[ii,:,:]),dim=1) / 2048.)
+
+                    feature = F.adaptive_avg_pool2d(trg_feature, (1,1))
+
+                    ext_feature = feature.squeeze().expand(NUM_CLASSES, 256)
+                    loss_cls += torch.min(torch.sum(L1_loss(ext_feature, src_cls_features[ii,:,:]),dim=1) / 256.)
 
                 seg_ins = seg_label(pred_target_idx.squeeze())
                 for ii in range(len(FG_LABEL)):
@@ -506,61 +464,20 @@ def main():
                     if len(pixelnum) == 0:
                         continue
                     sortmax = np.argsort(pixelnum)[::-1]
-                    for i in range(min(100, len(sortmax))):
+                    for i in range(min(10, len(sortmax))):
                         mask = segmask==(sortmax[i]+1)
-                        feature = global_avg_pool(trg_feature, mask.float())
-                        feature = feature.squeeze().expand(num_ins, 2048)
-                        loss_ins += torch.min(torch.sum(L1_loss(feature, src_ins_features[ii, :, :]), dim=1) / 2048.) / min(100,len(sortmax))
-                        #loss_ins += BETA* CATEGORY_INS_COFF[i] * torch.min(torch.sum(L1_loss(feature, src_ins_features[ii,:,:]),dim=1) / 2048.) / min(100, len(sortmax))
-                        # loss_ins_sour = torch.min(torch.sum(L1_loss(feature, src_ins_features[ii,:,:]),dim=1) / 2048.) / min(10, len(sortmax))
-                        # loss_ins_enhance = CATEGORY_INS_COFF[i] * torch.min(torch.sum(L1_loss(feature, src_ins_features[ii,:,:]),dim=1) / 2048.) / min(10, len(sortmax))
-                        # print('loss_ins_sor{}:'.format(i),loss_ins_sour.item())
-                        # print('loss_ins_enhance{}:'.format(i), loss_ins_enhance.item())
-                        
-                
-                
+                        #feature = global_avg_pool(trg_feature, mask.float())
+                        feature = F.adaptive_avg_pool2d(trg_feature, (1, 1))
 
-
-
-
-                for ii in range(len(BG_LABEL)):
-                    cls_idx_BG = BG_LABEL[ii]
-                    if src_cls_ptr[ii] / num_prototype <= 1:
-                        continue
-                    mask = pred_target_idx==cls_idx_BG
-                    feature_BG = global_avg_pool(trg_feature, mask.float())
-                    if cls_idx_BG != torch.argmax(torch.squeeze(model.layer6(feature_BG.half()).float())).item():
-                        continue
-                    ext_feature = feature_BG.squeeze().expand(num_prototype*10, 2048)
-
-                    for jj in range(len(FG_LABEL)):
-                        cls_idx_FG = FG_LABEL[jj]
-                        if src_ins_ptr[jj] / num_ins <= 1:
-                            continue
-                        segmask, pixelnum = seg_ins[jj]
-                        if len(pixelnum) == 0:
-                            continue
-                        sortmax = np.argsort(pixelnum)[::-1]
-                        for i in range(min(100, len(sortmax))):
-                            mask = segmask==(sortmax[i]+1)
-                            feature_FG = global_avg_pool(trg_feature, mask.float()) #[1,2048,1,1]
-                            feature_FG = feature_FG.squeeze().expand(num_ins, 2048) #[500,2048]
-                            loss_cate_dist += torch.sum(0.5+0.5*torch.cosine_similarity(ext_feature, feature_FG, dim=1)) / 2048. / min(100, len(sortmax))
-                            
-
-
-
-
-
+                        feature = feature.squeeze().expand(NUM_CLASSES, 256)
+                        loss_ins += torch.min(torch.sum(L1_loss(feature, src_ins_features[ii,:,:]),dim=1) / 256.) / min(10, len(sortmax))
+            
             pred_target = interp_target(pred_target)
-
+            
             D_out = model_D(F.softmax(pred_target, dim=1))
             loss_adv_target = bce_loss(D_out, torch.FloatTensor(D_out.data.size()).fill_(source_label).to(device))
-
-            pred_target = interp_target(pred_target)
-            loss_seg_trg = seg_loss(pred_target, trg_labels)
-
-            loss = loss_seg_trg + args.lambda_adv_target * loss_adv_target + args.lambda_adv_cls * loss_cls + args.lambda_adv_ins * loss_ins + args.lambda_adv_cate * loss_cate_dist
+            
+            loss = args.lambda_adv_target * loss_adv_target + args.lambda_adv_cls * loss_cls + args.lambda_adv_ins * loss_ins
             loss = loss / args.iter_size
             amp_backward(loss, optimizer)
             loss_adv_target_value += loss_adv_target.item() / args.iter_size
@@ -571,20 +488,20 @@ def main():
 
             for param in model_D.parameters():
                 param.requires_grad = True
-
+            
             # train with source
             pred = pred.detach()
             D_out = model_D(F.softmax(pred, dim=1))
-
+            
             loss_D = bce_loss(D_out, torch.FloatTensor(D_out.data.size()).fill_(source_label).to(device))
             loss_D = loss_D / args.iter_size / 2
             amp_backward(loss_D, optimizer_D)
             loss_D_value += loss_D.item()
-
+            
             # train with target
             pred_target = pred_target.detach()
             D_out = model_D(F.softmax(pred_target, dim=1))
-
+            
             loss_D = bce_loss(D_out, torch.FloatTensor(D_out.data.size()).fill_(target_label).to(device))
             loss_D = loss_D / args.iter_size / 2
             amp_backward(loss_D, optimizer_D)
@@ -606,41 +523,43 @@ def main():
 
         print('exp = {}'.format(args.snapshot_dir))
         print(
-        'iter = {0:8d}/{1:8d}, loss_seg = {2:.3f}, loss_seg_trg = {3:.3f}, loss_adv = {4:.3f} loss_D = {5:.3f} loss_cls = {6:.3f} loss_ins = {7:.3f} loss_cate_dist = {8:.3f}'.format(
-            i_iter, args.num_steps, loss_seg_value, loss_seg_trg.item(), loss_adv_target_value, loss_D_value, loss_cls.item(), loss_ins.item(), loss_cate_dist.item()))
+        'iter = {0:8d}/{1:8d}, loss_seg = {2:.3f}, loss_adv = {3:.3f} loss_D = {4:.3f} loss_cls = {5:.3f} loss_ins = {6:.3f}'.format(
+            i_iter, args.num_steps, loss_seg_value, loss_adv_target_value, loss_D_value, loss_cls.item(), loss_ins.item()))
 
         if i_iter >= args.num_steps_stop - 1:
             print('save model ...')
-            torch.save(model.state_dict(), osp.join(args.snapshot_dir, 'MassBuilding2Inria_' + str(args.num_steps_stop) + '.pth'))
-            torch.save(model_D.state_dict(), osp.join(args.snapshot_dir, 'MassBuilding2Inria_' + str(args.num_steps_stop) + '_D.pth'))
+            torch.save(model.state_dict(), osp.join(args.snapshot_dir, 'DeepGlobeMassRoad_' + str(args.num_steps_stop) + '.pth'))
+            torch.save(model_D.state_dict(), osp.join(args.snapshot_dir, 'DeepGlobe2MassRoad_' + str(args.num_steps_stop) + '_D.pth'))
             break
 
         if i_iter % args.save_pred_every == 0 and i_iter != 0:
             print('taking snapshot ...')
             if not os.path.exists(args.save):
                 os.makedirs(args.save)
-            testloader = data.DataLoader(InriaDataSet(args.data_dir_target, args.data_list_target_test,
-                                                           crop_size=(1024, 1024), mean=IMG_MEAN, scale=False, mirror=False),
+            testloader = data.DataLoader(MassRoadDataSet(args.data_dir_target, args.data_list_target_test,
+                                                           crop_size=(512,512), mean=IMG_MEAN, scale=False, mirror=False),
                                          batch_size=1, shuffle=False, pin_memory=True)
             model.eval()
             for index, batch in enumerate(testloader):
-                image, _, name = batch
+                image, _,_, name = batch
                 with torch.no_grad():
-                   output1, output2 = model(Variable(image).to(device))
+                    output1, output2 = model(Variable(image).to(device))
                 output = test_interp(output2).cpu().data[0].numpy()
                 output = output.transpose(1,2,0)
                 output = np.asarray(np.argmax(output, axis=2), dtype=np.uint8)
+                output_col = colorize_mask(output)
                 output = Image.fromarray(output)
-                name = name[0].split('/')[-1]+'.png'
-                output.save('%s/%s' % (args.save, name))
-            mIoUs = compute_mIoU_RSI(osp.join(args.data_dir_target,'SegmentationClass'), args.save, 'dataset/Inria_list')
+                name_save = name[0].split('/')[-1] + '.png'
+                output.save('%s/%s' % (args.save, name_save))
+                output_col.save('%s/%s_color.png' % (args.save, name[0].split('/')[-1]))
+            mIoUs = compute_mIoU_RSI(osp.join(args.data_dir_target,'SegmentationClass_cleannull'), args.save, 'dataset/MassRoad_list')
             mIoU = round(np.nanmean(mIoUs) * 100, 2)
             if mIoU > bestIoU:
                 bestIoU = mIoU
                 torch.save(model.state_dict(), osp.join(args.snapshot_dir, 'Best.pth'))
                 torch.save(model_D.state_dict(), osp.join(args.snapshot_dir, 'Best_D.pth'))
-            torch.save(model.state_dict(), osp.join(args.snapshot_dir, 'MassBuilding2Inria_' + str(i_iter) + '.pth'))
-            torch.save(model_D.state_dict(), osp.join(args.snapshot_dir, 'MassBuilding2Inria_' + str(i_iter) + '_D.pth'))
+            torch.save(model.state_dict(), osp.join(args.snapshot_dir, 'DeepGlobe2MassRoad_' + str(i_iter) + '.pth'))
+            torch.save(model_D.state_dict(), osp.join(args.snapshot_dir, 'DeepGlobe2MassRoad_' + str(i_iter) + '_D.pth'))
             model.train()
 
     if args.tensorboard:
