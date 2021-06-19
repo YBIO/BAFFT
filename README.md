@@ -37,32 +37,39 @@ ln -s path_to_gta5_labels_folder ./data/gta5_deeplab/labels
 ``
 
 
-
-# Quick Start
-## GTA5→Cityscapes:
-### Train and Validation: 
-
-``
-CUDA_VISIBLE_DEVICES=0 python train_sim_ssl.py 
-``
-
 ### pretrained models
 BaiduNetDesk:
 link: https://pan.baidu.com/s/1n_l9kJNFda5vNTKDE7b92g 
 fetch code：j5a3 
 
+# Quick Start
+## GTA5→Cityscapes:
+### Train: 
+
+``
+#### Step 1
+CUDA_VISIBLE_DEVICES=0 python train_step1.py \\
+python Generate_Pseudo_Label.py \\
+#### Step 2
+CUDA_VISIBLE_DEVICES=0 python train_step2.py \\
+``
+
 ### Inference & Evaluation
 
 ``
-file="$1"    
-python evaluate_cityscapes.py --restore-from "$file"    
-python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes   
+file="$1"    \\
+python evaluate_cityscapes.py --restore-from "$file" \\   
+python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes   \\
 ``
+
 
 # Results
 ### GTA5 to Cityscapes
-![Image Error](https://github.com/Shang-XH/BAFFT/tree/main/illustration/GTA5toCityscapes.png)
+![GTA5 to Cityscapes](https://github.com/Shang-XH/BAFFT/tree/main/illustration/GTA5toCityscapes.png)
 ### SYNTHIA to Cityscapes
-![Image Error](https://github.com/Shang-XH/BAFFT/tree/main/illustration/SYNTHIAtoCityscapes.png)
+![SYNTHIA to Cityscapes](https://github.com/Shang-XH/BAFFT/tree/main/illustration/SYNTHIAtoCityscapes.png)
 ### Visualizations
-![Image Error](https://github.com/Shang-XH/BAFFT/tree/main/illustration/visualization.png)
+![Visualizations](https://github.com/Shang-XH/BAFFT/tree/main/illustration/visualization.png)
+
+
+
