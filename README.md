@@ -32,8 +32,11 @@ Download [Cityscapes](https://www.cityscapes-dataset.com/), [CycleGAN transferre
 
 ``
 ln -s path_to_Cityscapes_folder ./data/Cityscapes    
+
 ln -s path_to_gta5_deeplab_folder ./data/gta5_deeplab     
+
 ln -s path_to_gta5_labels_folder ./data/gta5_deeplab/labels     
+
 ``
 
 
@@ -73,6 +76,4 @@ python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes
 ![SYNTHIA to Cityscapes](https://github.com/Shang-XH/BAFFT/tree/main/illustration/SYNTHIAtoCityscapes.png)
 ### Visualizations
 ![Visualizations](https://github.com/Shang-XH/BAFFT/tree/main/illustration/visualization.png)
-
-
 
