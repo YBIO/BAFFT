@@ -49,7 +49,7 @@ CUDA_VISIBLE_DEVICES=0 python train_sim_ssl.py
 ### pretrained models
 BaiduNetDesk:
 link: https://pan.baidu.com/s/1n_l9kJNFda5vNTKDE7b92g 
-dentch code：j5a3 
+fetch code：j5a3 
 
 ### Inference & Evaluation
 
@@ -60,4 +60,9 @@ python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes
 ``
 
 # Results
-
+### GTA5 to Cityscapes
+![Image Error](https://github.com/Shang-XH/BAFFT/tree/main/illustration/GTA5toCityscapes.png)
+### SYNTHIA to Cityscapes
+![Image Error](https://github.com/Shang-XH/BAFFT/tree/main/illustration/SYNTHIAtoCityscapes.png)
+### Visualizations
+![Image Error](https://github.com/Shang-XH/BAFFT/tree/main/illustration/visualization.png)
