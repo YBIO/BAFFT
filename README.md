@@ -48,18 +48,21 @@ fetch code：j5a3
 
 ``
 #### Step 1
-CUDA_VISIBLE_DEVICES=0 python train_step1.py \\
-python Generate_Pseudo_Label.py \\
+CUDA_VISIBLE_DEVICES=0 python train_step1.py
+
+python Generate_Pseudo_Label.py 
 #### Step 2
-CUDA_VISIBLE_DEVICES=0 python train_step2.py \\
+CUDA_VISIBLE_DEVICES=0 python train_step2.py 
 ``
 
 ### Inference & Evaluation
 
 ``
-file="$1"    \\
-python evaluate_cityscapes.py --restore-from "$file" \\   
-python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes   \\
+file="$1"   
+
+python evaluate_cityscapes.py --restore-from "$file" 
+
+python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes  
 ``
 
 
