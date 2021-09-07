@@ -23,7 +23,9 @@ pip install inplace-abn
 
 `` 
 git clone https://github.com/NVIDIA/apex  
+
 cd apex/   
+
 pip setup.py install 
 ``
 
@@ -42,11 +44,13 @@ ln -s path_to_gta5_labels_folder ./data/gta5_deeplab/labels
 
 
 ### pretrained models
-# Download and put it in ./pretrained
+Download and put it in ./pretrained
 BaiduNetDesk:
-link: https://pan.baidu.com/s/1n_l9kJNFda5vNTKDE7b92g 
+link: ``https://pan.baidu.com/s/1n_l9kJNFda5vNTKDE7b92g ``
 fetch code: j5a3 
 
+Google Drive:
+`` https://drive.google.com/drive/u/0/folders/1pMf0nQ5eawmGHlSQ9FWmHgboROtCfbFk ``
 
 
 # Quick Start
@@ -65,9 +69,8 @@ CUDA_VISIBLE_DEVICES=0 python train_step2.py
 ### Inference & Evaluation
 
 ``
-file="$1"   
 
-python evaluate_cityscapes.py --restore-from "$file" 
+python evaluate_cityscapes.py --restore-from ./pretrained/GTA2Cityscapes/GTA5_Best.pth
 
 python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes  
 ``
