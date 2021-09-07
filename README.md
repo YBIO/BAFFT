@@ -1,6 +1,6 @@
 # This is the official repo of "Birds of A Feather Flock Together"
 
-Bo Yuan, Danpei Zhao, Shuai Shao, Zehuan Yuan, Changhu Wang. Birds of A Feather Flock Together: Categort-Divergence Guidance for Domain Adaptive Segmentation
+Bo Yuan, Danpei Zhao, Shuai Shao, Zehuan Yuan, Changhu Wang. Birds of A Feather Flock Together: Category-Divergence Guidance for Domain Adaptive Segmentation
 
 
 ## Update 2021-09-07
@@ -8,7 +8,7 @@ Bo Yuan, Danpei Zhao, Shuai Shao, Zehuan Yuan, Changhu Wang. Birds of A Feather 
 # Preparation
 
 `` 
-git clone git@github.com:Shang-XH/BAFTT.git 
+git clone https://github.com/HibiscusYB/BAFFT.git
 `` 
 `` 
 cd BAFFT/  
