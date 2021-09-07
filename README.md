@@ -79,8 +79,8 @@ python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes
 
 # Results
 ### GTA5 to Cityscapes
-![GTA5 to Cityscapes](https://github.com/Shang-XH/BAFFT/tree/main/illustration/GTA5toCityscapes.png)
+![GTA5 to Cityscapes](https://github.com/HibiscusYB/BAFFT/tree/main/illustration/GTA5toCityscapes.png)
 ### SYNTHIA to Cityscapes
-![SYNTHIA to Cityscapes](https://github.com/Shang-XH/BAFFT/tree/main/illustration/SYNTHIAtoCityscapes.png)
+![SYNTHIA to Cityscapes](https://github.com/HibiscusYB/BAFFT/tree/main/illustration/SYNTHIAtoCityscapes.png)
 ### Visualizations
-![Visualizations](https://github.com/Shang-XH/BAFFT/tree/main/illustration/visualization.png)
+![Visualizations](https://github.com/HibiscusYB/BAFFT/tree/main/illustration/visualization.png)
