@@ -3,7 +3,7 @@
 Bo Yuan, Danpei Zhao, Shuai Shao, Zehuan Yuan, Changhu Wang. Birds of A Feather Flock Together: Categort-Divergence Guidance for Domain Adaptive Segmentation
 
 
-## Update 2021-09-06
+## Update 2021-09-07
 
 # Preparation
 
@@ -45,7 +45,7 @@ ln -s path_to_gta5_labels_folder ./data/gta5_deeplab/labels
 # Download and put it in ./pretrained
 BaiduNetDesk:
 link: https://pan.baidu.com/s/1n_l9kJNFda5vNTKDE7b92g 
-fetch code£ºj5a3 
+fetch code: j5a3 
 
 
 
