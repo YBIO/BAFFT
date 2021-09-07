@@ -44,7 +44,8 @@ ln -s path_to_gta5_labels_folder ./data/gta5_deeplab/labels
 
 
 ### pretrained models
-Download and put it in ./pretrained
+Download models and put them in ``./pretrained`` folder
+
 BaiduNetDesk:
 link: ``https://pan.baidu.com/s/1n_l9kJNFda5vNTKDE7b92g ``
 fetch code: j5a3 
