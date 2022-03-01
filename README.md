@@ -8,11 +8,10 @@ Bo Yuan, Danpei Zhao, Shuai Shao, Zehuan Yuan, Changhu Wang. Birds of A Feather 
 # Preparation
 
 `` 
-git clone https://github.com/HibiscusYB/BAFFT.git
+git clone https://github.com/HibiscusYB/BAFFT.git  
+cd BAFFT
 `` 
-`` 
-cd BAFFT/  
-``
+
 
 ### install inplace-abn
 ``
