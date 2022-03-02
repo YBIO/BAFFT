@@ -6,10 +6,8 @@ Bo Yuan, Danpei Zhao, Shuai Shao, Zehuan Yuan, Changhu Wang. Birds of A Feather 
 ## Update 2021-09-07
 
 ### Preparation
-
 `` 
 git clone https://github.com/HibiscusYB/BAFFT.git  
-
 
 cd BAFFT
 `` 
@@ -21,7 +19,6 @@ pip install inplace-abn
 ``
 
 ### install apex
-
 `` 
 git clone https://github.com/NVIDIA/apex   
 
@@ -33,7 +30,6 @@ pip setup.py install
 ### Prepare Dataset
 
 Download [Cityscapes](https://www.cityscapes-dataset.com/), [CycleGAN transferred GTA5](https://drive.google.com/open?id=1OBvYVz2ND4ipdfnkhSaseT8yu2ru5n5l) and [gta5 labels](https://drive.google.com/file/d/11E42F_4InoZTnoATi-Ob1yEHfz7lfZWg/view?usp=sharing). Symbolic link them under ``data`` folder: 
-
 ``
 ln -s path_to_Cityscapes_folder ./data/Cityscapes  
       
@@ -69,7 +65,6 @@ CUDA_VISIBLE_DEVICES=0 python train_step2.py
 ``
 
 ### Inference & Evaluation
-
 ``
 python evaluate_cityscapes.py --restore-from ./pretrained/GTA2Cityscapes/GTA5_Best.pth   
 
