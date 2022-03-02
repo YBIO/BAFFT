@@ -5,10 +5,11 @@ Bo Yuan, Danpei Zhao, Shuai Shao, Zehuan Yuan, Changhu Wang. Birds of A Feather 
 
 ## Update 2021-09-07
 
-# Preparation
+### Preparation
 
 `` 
 git clone https://github.com/HibiscusYB/BAFFT.git  
+---
 cd BAFFT
 `` 
 
@@ -21,11 +22,9 @@ pip install inplace-abn
 ### install apex
 
 `` 
-git clone https://github.com/NVIDIA/apex  
-
-cd apex/   
-
-pip setup.py install 
+git clone https://github.com/NVIDIA/apex   
+cd apex/     
+pip setup.py install   
 ``
 
 ### Prepare Dataset
@@ -33,12 +32,9 @@ pip setup.py install
 Download [Cityscapes](https://www.cityscapes-dataset.com/), [CycleGAN transferred GTA5](https://drive.google.com/open?id=1OBvYVz2ND4ipdfnkhSaseT8yu2ru5n5l) and [gta5 labels](https://drive.google.com/file/d/11E42F_4InoZTnoATi-Ob1yEHfz7lfZWg/view?usp=sharing). Symbolic link them under ``data`` folder: 
 
 ``
-ln -s path_to_Cityscapes_folder ./data/Cityscapes    
-
-ln -s path_to_gta5_deeplab_folder ./data/gta5_deeplab     
-
-ln -s path_to_gta5_labels_folder ./data/gta5_deeplab/labels     
-
+ln -s path_to_Cityscapes_folder ./data/Cityscapes        
+ln -s path_to_gta5_deeplab_folder ./data/gta5_deeplab       
+ln -s path_to_gta5_labels_folder ./data/gta5_deeplab/labels       
 ``
 
 
@@ -47,7 +43,7 @@ Download models and put them in ``./pretrained`` folder
 
 BaiduNetDesk:
 link: ``https://pan.baidu.com/s/1n_l9kJNFda5vNTKDE7b92g ``
-fetch code: j5a3 
+fetch code: j5a3   
 
 Google Drive:
 `` https://drive.google.com/drive/u/0/folders/1pMf0nQ5eawmGHlSQ9FWmHgboROtCfbFk ``
@@ -56,23 +52,21 @@ Google Drive:
 # Quick Start
 ## GTA5¡úCityscapes:
 ### Train: 
-
-``
 #### Step 1
-CUDA_VISIBLE_DEVICES=0 python train_step1.py
-
-python Generate_Pseudo_Label.py 
+``
+CUDA_VISIBLE_DEVICES=0 python train_step1.py  
+python Generate_Pseudo_Label.py   
+``
 #### Step 2
-CUDA_VISIBLE_DEVICES=0 python train_step2.py 
+``
+CUDA_VISIBLE_DEVICES=0 python train_step2.py  
 ``
 
 ### Inference & Evaluation
 
 ``
-
-python evaluate_cityscapes.py --restore-from ./pretrained/GTA2Cityscapes/GTA5_Best.pth
-
-python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes  
+python evaluate_cityscapes.py --restore-from ./pretrained/GTA2Cityscapes/GTA5_Best.pth   
+python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes   
 ``
 
 
