@@ -1,1 +1,89 @@
-<div><div style="margin:0;"><span style="font-size: 18px;"><b># This is the official repo of "Birds of A Feather Flock Together"</b></span></div><p style="margin:0;">## Bo Yuan, Danpei Zhao, Shuai Shao, Zehuan Yuan, Changhu Wang. Birds of A Feather Flock Together: Category-Divergence Guidance for Domain Adaptive Segmentation</p><p style="margin:0;"><br /></p><p style="margin:0;"><b>## Update 2021-09-07</b></p><p style="margin:0;"><br /></p><p style="margin:0;"><b>Preparation</b></p><div style="margin:0;"><br /></div><div style="margin:0;">1. download repo:</div><p style="margin:0;">&nbsp;git clone https://github.com/HibiscusYB/BAFFT.git&nbsp;&nbsp;</p><p style="margin:0;">&nbsp;cd BAFFT</p><p style="margin:0;"><br /></p><p style="margin:0;">2. install inplace-abn:</p><p style="margin:0;">&nbsp;pip install inplace-abn</p><p style="margin:0;"><br /></p><p style="margin:0;">3. install apex:</p><p style="margin:0;">git clone https://github.com/NVIDIA/apex&nbsp; &nbsp;</p><p style="margin:0;">cd apex/&nbsp; &nbsp; &nbsp;</p><p style="margin:0;">pip setup.py install&nbsp; &nbsp;</p><p style="margin:0;"><br /></p><p style="margin:0;">4. prepare dataset</p><div style="margin:0;">&nbsp;Download [Cityscapes](https://www.cityscapes-dataset.com/), [CycleGAN transferred GTA5](https://drive.google.com/open?id=1OBvYVz2ND4ipdfnkhSaseT8yu2ru5n5l) and [gta5 labels] (https://drive.google.com/file/d/11E42F_4InoZTnoATi-Ob1yEHfz7lfZWg/view?usp=sharing).&nbsp;</div><div style="margin:0;">&nbsp;Symbolic link them under ``data`` folder:&nbsp;</div><p style="margin:0;"><br /></p><p style="margin:0;">&nbsp;ln -s path_to_Cityscapes_folder ./data/Cityscapes&nbsp; &nbsp;</p><p style="margin:0;">&nbsp;ln -s path_to_gta5_deeplab_folder ./data/gta5_deeplab&nbsp; &nbsp;</p><p style="margin:0;">&nbsp;ln -s path_to_gta5_labels_folder ./data/gta5_deeplab/labels&nbsp; &nbsp; &nbsp;&nbsp;</p><p style="margin:0;"><br /></p><p style="margin:0;">5.&nbsp; pretrained models</p><p style="margin:0;">&nbsp;Download models and put them in ``./pretrained`` folder</p><p style="margin:0;">&nbsp;BaiduNetDesk:</p><p style="margin:0;">&nbsp;link: ``https://pan.baidu.com/s/1n_l9kJNFda5vNTKDE7b92g ``</p><p style="margin:0;">&nbsp;fetch code: j5a3&nbsp; &nbsp;</p><p style="margin:0;"><br /></p><p style="margin:0;">&nbsp;Google Drive:&nbsp;</p><p style="margin:0;">&nbsp;https://drive.google.com/drive/u/0/folders/1pMf0nQ5eawmGHlSQ9FWmHgboROtCfbFk&nbsp;</p><p style="margin:0;"><br /></p><p style="margin:0;"><b>Quick Start</b></p><p style="margin:0;">## GTA5 to Cityscapes:</p><p style="margin:0;">### Train:&nbsp;</p><p style="margin:0;">#### Step 1</p><p style="margin:0;">CUDA_VISIBLE_DEVICES=0 python train_step1.py&nbsp;&nbsp;</p><p style="margin:0;">python Generate_Pseudo_Label.py&nbsp; &nbsp;</p><p style="margin:0;"><br /></p><p style="margin:0;">#### Step 2</p><p style="margin:0;">CUDA_VISIBLE_DEVICES=0 python train_step2.py&nbsp;&nbsp;</p><p style="margin:0;"><br /></p><p style="margin:0;">### Inference &amp; Evaluation</p><p style="margin:0;">python evaluate_cityscapes.py --restore-from ./pretrained/GTA2Cityscapes/GTA5_Best.pth&nbsp; &nbsp;</p><div style="margin:0;">python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes&nbsp;&nbsp;</div><div style="margin:0;"><br /></div><div id="spnEditorSign" style="position:relative;zoom:1"><div style="clear:both"></div></div><div>## Experiment Results</div><div>### GTA5 to Cityscapes</div><div>![GTA5 to Cityscapes](https://github.com/HibiscusYB/BAFFT/tree/main/illustration/GTA5toCityscapes.png)</div><div>### SYNTHIA to Cityscapes</div><div>![SYNTHIA to Cityscapes](https://github.com/HibiscusYB/BAFFT/tree/main/illustration/SYNTHIAtoCityscapes.png)</div><div>### Visualizations</div><div>![Visualizations](https://github.com/HibiscusYB/BAFFT/tree/main/illustration/visualization.png)</div><div><br /></div><br /><br /></div>
+# This is the official repo of "Birds of A Feather Flock Together"
+
+Bo Yuan, Danpei Zhao, Shuai Shao, Zehuan Yuan, Changhu Wang. Birds of A Feather Flock Together: Category-Divergence Guidance for Domain Adaptive Segmentation
+
+
+## Update 2021-09-07
+
+### Preparation
+`` 
+git clone https://github.com/HibiscusYB/BAFFT.git  
+``   
+``   
+cd BAFFT
+`` 
+
+
+### install inplace-abn
+``
+pip install inplace-abn  
+``  
+
+### install apex
+`` 
+git clone https://github.com/NVIDIA/apex
+``   
+``   
+cd apex/     
+``   
+``   
+pip setup.py install   
+``
+
+### Prepare Dataset
+
+Download [Cityscapes](https://www.cityscapes-dataset.com/), [CycleGAN transferred GTA5](https://drive.google.com/open?id=1OBvYVz2ND4ipdfnkhSaseT8yu2ru5n5l) and [gta5 labels](https://drive.google.com/file/d/11E42F_4InoZTnoATi-Ob1yEHfz7lfZWg/view?usp=sharing). Symbolic link them under ``data`` folder: 
+``
+ln -s path_to_Cityscapes_folder ./data/Cityscapes  
+``  
+``   
+ln -s path_to_gta5_deeplab_folder ./data/gta5_deeplab   
+``    
+``   
+ln -s path_to_gta5_labels_folder ./data/gta5_deeplab/labels       
+``
+
+
+### pretrained models
+Download models and put them in ``./pretrained`` folder
+
+BaiduNetDesk:
+link: ``https://pan.baidu.com/s/1n_l9kJNFda5vNTKDE7b92g ``  
+fetch code: j5a3     
+
+Google Drive:
+`` 
+https://drive.google.com/drive/u/0/folders/1pMf0nQ5eawmGHlSQ9FWmHgboROtCfbFk 
+``
+
+# Quick Start
+## GTA5 to Cityscapes:
+### Train: 
+#### Step 1
+``
+CUDA_VISIBLE_DEVICES=0 python train_step1.py  
+``   
+``   
+python Generate_Pseudo_Label.py   
+``
+#### Step 2
+``
+CUDA_VISIBLE_DEVICES=0 python train_step2.py  
+``
+
+### Inference & Evaluation
+``
+python evaluate_cityscapes.py --restore-from ./pretrained/GTA2Cityscapes/GTA5_Best.pth   
+``   
+``   
+python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes   
+``
+
+
+# Results
+### GTA5 to Cityscapes
+![GTA5 to Cityscapes](https://github.com/HibiscusYB/BAFFT/tree/main/illustration/GTA5toCityscapes.png)
+### SYNTHIA to Cityscapes
+![SYNTHIA to Cityscapes](https://github.com/HibiscusYB/BAFFT/tree/main/illustration/SYNTHIAtoCityscapes.png)
+### Visualizations
+![Visualizations](https://github.com/HibiscusYB/BAFFT/tree/main/illustration/visualization.png)
