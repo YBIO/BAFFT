@@ -56,9 +56,9 @@ Google Drive:
 https://drive.google.com/drive/u/0/folders/1pMf0nQ5eawmGHlSQ9FWmHgboROtCfbFk 
 ``
 
-# Quick Start
-## GTA5 to Cityscapes:
-### Train: 
+## Quick Start
+### GTA5 to Cityscapes:
+#### Train: 
 #### Step 1
 ``
 CUDA_VISIBLE_DEVICES=0 python train_step1.py  
@@ -80,7 +80,7 @@ python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes
 ``
 
 
-# Results
+## Results
 ### GTA5 to Cityscapes
 ![GTA5 to Cityscapes](https://github.com/HibiscusYB/BAFFT/tree/main/illustration/GTA5toCityscapes.png)
 ### SYNTHIA to Cityscapes
