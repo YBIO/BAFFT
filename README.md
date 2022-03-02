@@ -48,11 +48,12 @@ link: ``https://pan.baidu.com/s/1n_l9kJNFda5vNTKDE7b92g ``
 fetch code: j5a3   
 
 Google Drive:
-`` https://drive.google.com/drive/u/0/folders/1pMf0nQ5eawmGHlSQ9FWmHgboROtCfbFk ``
-
+`` 
+https://drive.google.com/drive/u/0/folders/1pMf0nQ5eawmGHlSQ9FWmHgboROtCfbFk 
+``
 
 # Quick Start
-## GTA5¡úCityscapes:
+## GTA5 to Cityscapes:
 ### Train: 
 #### Step 1
 ``
