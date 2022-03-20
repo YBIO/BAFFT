@@ -2,7 +2,7 @@
 
 [Bo Yuan](https://scholar.google.com/citations?hl=zh-CN&user=CnOQPFAAAAAJ), [Danpei Zhao](https://scholar.google.com/citations?hl=zh-CN&user=1sgrmSQAAAAJ), Shuai Shao, Zehuan Yuan, Changhu Wang.
 
-![](https://github.com/HibiscusYB/BAFFT/tree/main/illustration/motivation.png)
+![algorithm](https://github.com/HibiscusYB/BAFFT/tree/main/illustration/motivation.png)
 
 ## Update 2022-03-20
 
