@@ -1,4 +1,3 @@
-<div align="center">
 # Official code of "Birds of A Feather Flock Together: Category-Divergence Guidance for Domain Adaptive Segmentation. *IEEE Transactions on Image Processing*, 2022."
 
 [Bo Yuan](https://scholar.google.com/citations?hl=zh-CN&user=CnOQPFAAAAAJ), [Danpei Zhao](https://scholar.google.com/citations?hl=zh-CN&user=1sgrmSQAAAAJ), Shuai Shao, Zehuan Yuan, Changhu Wang.
