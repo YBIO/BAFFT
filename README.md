@@ -1,6 +1,6 @@
 # This is the official repo of "Birds of A Feather Flock Together"
 
-Bo Yuan, Danpei Zhao, Shuai Shao, Zehuan Yuan, Changhu Wang. Birds of A Feather Flock Together: Category-Divergence Guidance for Domain Adaptive Segmentation
+Bo Yuan, Danpei Zhao, Shuai Shao, Zehuan Yuan, Changhu Wang. Birds of A Feather Flock Together: Category-Divergence Guidance for Domain Adaptive Segmentation. IEEE Transaction on Image Processing, 2022.
 
 
 ## Update 2021-09-07
