@@ -4,7 +4,7 @@
 
 ![algorithm](illustration/motivation.png)
 
-## Update 2022-03-20
+### Update 2022-03-20
 
 ### Preparation
 ```python
@@ -77,4 +77,4 @@ python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes
 ![Visualizations](illustration/visualization.png)
 
 
-### Airvic All Rights Reserved
+### *Airvic All Rights Reserved*
