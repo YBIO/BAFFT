@@ -1,6 +1,7 @@
 # Official code of "Birds of A Feather Flock Together: Category-Divergence Guidance for Domain Adaptive Segmentation. *IEEE Transactions on Image Processing*, 2022."
 
 [Bo Yuan](https://scholar.google.com/citations?hl=zh-CN&user=CnOQPFAAAAAJ)<sup>1,2</sup>, [Danpei Zhao](https://scholar.google.com/citations?hl=zh-CN&user=1sgrmSQAAAAJ)<sup>1,2*</sup>, Shuai Shao<sup>3</sup>, Zehuan Yuan<sup>3</sup>, Changhu Wang<sup>3</sup>.
+
 <sup>1</sup> <sub>Image Processing Center, BUAA</sub><br />
 <sup>2</sup> <sub>Airvic Lab</sub><br />
 <sup>3</sup> <sub>ByteDance AI-Lab</sub><br />
@@ -79,7 +80,9 @@ python compute_iou.py ./data/Cityscapes/gtFine/val result/cityscapes
 ### SYNTHIA to Cityscapes
 ![SYNTHIA to Cityscapes](illustration/SYNTHIAtoCityscapes.png)
 ### Visualizations
-![Visualizations](illustration/visualization.png)
+![Visualizations](illustration/visualization_GTA-Cityscapes.png)
+![Visualizations](illustration/visualization_IAILD-MBD.png)
+![Visualizations](illustration/visualization_DeepGlobe-MRD.png)
 
 
 ### *Airvic All Rights Reserved*
