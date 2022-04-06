@@ -6,7 +6,7 @@
 <sup>2</sup> <sub>Airvic Lab</sub><br />
 <sup>3</sup> <sub>ByteDance AI-Lab</sub><br />
 
-[![Paper](https://ieeexplore.ieee.org/document/9745831)]
+![Paper](https://ieeexplore.ieee.org/document/9745831)
 
 ![algorithm](illustration/motivation.png)
 
