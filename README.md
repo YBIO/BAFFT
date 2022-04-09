@@ -18,6 +18,20 @@ Unsupervised domain adaptation (UDA) aims to enhance the generalization capabili
 
 ![algorithm](illustration/motivation.png)
 
+### Citation
+```
+@ARTICLE{9745831,  
+  author={Yuan, Bo and Zhao, Danpei and Shao, Shuai and Yuan, Zehuan and Wang, Changhu},  
+  journal={IEEE Transactions on Image Processing},   
+  title={Birds of a Feather Flock Together: Category-Divergence Guidance for Domain Adaptive Segmentation},   
+  year={2022},  
+  volume={31},  
+  number={},  
+  pages={2878-2892},  
+  doi={10.1109/TIP.2022.3162471}
+}
+```
+
 ### Update 2022-03-20
 
 ### Preparation
