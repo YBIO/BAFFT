@@ -476,12 +476,7 @@ def main():
                         feature = feature.squeeze().expand(num_ins, 2048)
                         loss_ins_coff_FR=torch.min(torch.sum(L1_loss(feature, src_ins_features[ii,:,:]),dim=1) / 2048.)
                         loss_ins += loss_ins_coff_FR * torch.min(torch.sum(L1_loss(feature, src_ins_features[ii,:,:]),dim=1) / 2048.) / min(10, len(sortmax))
-                        # loss_ins_sour = torch.min(torch.sum(L1_loss(feature, src_ins_features[ii,:,:]),dim=1) / 2048.) / min(10, len(sortmax))
-                        # loss_ins_enhance = CATEGORY_INS_COFF[i] * torch.min(torch.sum(L1_loss(feature, src_ins_features[ii,:,:]),dim=1) / 2048.) / min(10, len(sortmax))
-                        # print('loss_ins_sor{}:'.format(i),loss_ins_sour.item())
-                        # print('loss_ins_enhance{}:'.format(i), loss_ins_enhance.item())
-                        
-                        
+
                 
                 
                 # category to instance
